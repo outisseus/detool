@@ -1,0 +1,16 @@
+{
+  "capability_id": "cap.synthetic.weather-read",
+  "version": "0.1.0",
+  "name": "Synthetic weather observation",
+  "description": "Returns fixture weather data for protocol testing. No network call is made.",
+  "operator": {"id": "operator.synthetic", "name": "Synthetic Operator", "proof_uri": null},
+  "input_schema": {"type": "object", "required": ["city"], "properties": {"city": {"type": "string"}}},
+  "output_schema": {"type": "object", "required": ["temperature_c"], "properties": {"temperature_c": {"type": "number"}}},
+  "side_effect": "none",
+  "data_classes": ["public"],
+  "required_permissions": [],
+  "verification": {"method": "schema", "description": "Validate the fixture response against the declared output schema."},
+  "pricing": null,
+  "endpoints": [{"transport": "local", "uri": "fixture://weather-read"}]
+}
+
