@@ -1,8 +1,8 @@
 # DeTool
 
-**A capability execution network for AI agents.**
+**An engineering-led capability execution system for AI agents.**
 
-> Status: **building / pre-alpha**. This repository contains public contracts, architecture notes, a minimal executable contract scaffold, and synthetic examples. It does not yet operate a live registry, provider network, payment rail, or production router.
+> Track: **execution system** · Status: **building / pre-alpha**. This repository contains public contracts, architecture notes, a minimal executable scaffold, tests, and synthetic examples. It does not yet operate a live registry, provider network, payment rail, or production router.
 
 ## The thesis
 
@@ -170,8 +170,6 @@ DeTool deliberately keeps a different boundary: outcome-first, transport-neutral
 │   ├── architecture.md
 │   ├── personal-context-integration.md
 │   └── pieverse-research-note.md
-├── papers/
-│   └── README.md
 ├── src/detool/
 │   ├── cli.py
 │   ├── contracts.py
