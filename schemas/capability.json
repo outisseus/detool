@@ -1,24 +1,88 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.example.dev/detool/capability.json",
+  "$id": "https://raw.githubusercontent.com/outisseus/detool/main/schemas/capability.json",
   "title": "CapabilityManifest",
   "type": "object",
   "additionalProperties": false,
-  "required": ["capability_id", "version", "name", "operator", "input_schema", "output_schema", "side_effect", "data_classes", "verification"],
+  "required": [
+    "capability_id",
+    "version",
+    "name",
+    "action",
+    "state_transition",
+    "operator",
+    "input_schema",
+    "output_schema",
+    "side_effect",
+    "data_classes",
+    "verification",
+    "execution_modes"
+  ],
   "properties": {
     "capability_id": {"type": "string", "pattern": "^cap_[a-z0-9._-]+$"},
     "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
     "name": {"type": "string", "minLength": 1},
     "description": {"type": "string"},
-    "operator": {"type": "object", "required": ["id", "name"], "properties": {"id": {"type": "string"}, "name": {"type": "string"}, "proof_uri": {"type": ["string", "null"]}}},
+    "action": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]+$"},
+    "state_transition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to"],
+      "properties": {
+        "from": {"type": "string"},
+        "to": {"type": "string"},
+        "idempotency_scope": {"type": ["string", "null"]}
+      }
+    },
+    "operator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name"],
+      "properties": {
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "proof_uri": {"type": ["string", "null"]}
+      }
+    },
     "input_schema": {"type": "object"},
     "output_schema": {"type": "object"},
     "side_effect": {"enum": ["none", "reversible", "external_write", "financial", "destructive"]},
-    "data_classes": {"type": "array", "items": {"enum": ["public", "private", "sensitive", "restricted"]}, "uniqueItems": true},
+    "data_classes": {
+      "type": "array",
+      "items": {"enum": ["public", "private", "sensitive", "restricted"]},
+      "uniqueItems": true
+    },
     "required_permissions": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
-    "verification": {"type": "object", "required": ["method"], "properties": {"method": {"enum": ["schema", "read_back", "signed_receipt", "state_probe", "human_review"]}, "description": {"type": "string"}}},
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method"],
+      "properties": {
+        "method": {"enum": ["schema", "read_back", "signed_receipt", "state_probe", "human_review"]},
+        "description": {"type": "string"}
+      }
+    },
+    "service_level": {
+      "type": ["object", "null"],
+      "properties": {
+        "target_success_rate": {"type": "number", "minimum": 0, "maximum": 1},
+        "target_p95_ms": {"type": "integer", "minimum": 0},
+        "measured": {"type": "boolean"}
+      }
+    },
     "pricing": {"type": ["object", "null"]},
-    "endpoints": {"type": "array", "items": {"type": "object", "required": ["transport", "uri"], "properties": {"transport": {"enum": ["https", "mcp", "local"]}, "uri": {"type": "string"}}}}
+    "execution_modes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["transport", "uri"],
+        "properties": {
+          "transport": {"enum": ["https", "mcp", "openapi", "graphql", "browser", "rpc", "local", "agent", "human"]},
+          "uri": {"type": "string"}
+        }
+      }
+    }
   }
 }
-

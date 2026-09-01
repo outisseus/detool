@@ -1,16 +1,51 @@
 {
-  "capability_id": "cap.synthetic.weather-read",
-  "version": "0.1.0",
-  "name": "Synthetic weather observation",
-  "description": "Returns fixture weather data for protocol testing. No network call is made.",
-  "operator": {"id": "operator.synthetic", "name": "Synthetic Operator", "proof_uri": null},
-  "input_schema": {"type": "object", "required": ["city"], "properties": {"city": {"type": "string"}}},
-  "output_schema": {"type": "object", "required": ["temperature_c"], "properties": {"temperature_c": {"type": "number"}}},
-  "side_effect": "none",
-  "data_classes": ["public"],
-  "required_permissions": [],
-  "verification": {"method": "schema", "description": "Validate the fixture response against the declared output schema."},
+  "capability_id": "cap.synthetic.job-application-submit",
+  "version": "0.2.0",
+  "name": "Synthetic job application submission",
+  "description": "Exercises an external-write contract without contacting a real employer.",
+  "action": "job.application.submit",
+  "state_transition": {
+    "from": "APPLICATION_DRAFT",
+    "to": "APPLICATION_SUBMITTED",
+    "idempotency_scope": "employer-role-applicant"
+  },
+  "operator": {
+    "id": "operator.synthetic",
+    "name": "Synthetic Operator",
+    "proof_uri": null
+  },
+  "input_schema": {
+    "type": "object",
+    "required": ["role_id", "candidate_projection", "authorization_id"],
+    "properties": {
+      "role_id": {"type": "string"},
+      "candidate_projection": {"type": "object"},
+      "authorization_id": {"type": "string"}
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "required": ["state", "confirmation_id"],
+    "properties": {
+      "state": {"const": "APPLICATION_SUBMITTED"},
+      "confirmation_id": {"type": "string"}
+    }
+  },
+  "side_effect": "external_write",
+  "data_classes": ["private"],
+  "required_permissions": ["job.application.submit"],
+  "verification": {
+    "method": "read_back",
+    "description": "Read the synthetic application status and confirmation ID back from the fixture provider."
+  },
+  "service_level": {
+    "target_success_rate": 0.99,
+    "target_p95_ms": 2000,
+    "measured": false
+  },
   "pricing": null,
-  "endpoints": [{"transport": "local", "uri": "fixture://weather-read"}]
+  "execution_modes": [
+    {"transport": "local", "uri": "fixture://job-application-submit"}
+  ]
 }
 

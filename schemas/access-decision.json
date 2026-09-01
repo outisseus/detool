@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.example.dev/detool/access-decision.json",
+  "$id": "https://raw.githubusercontent.com/outisseus/detool/main/schemas/access-decision.json",
   "title": "AccessDecision",
   "type": "object",
   "additionalProperties": false,
@@ -16,4 +16,3 @@
     "decided_at": {"type": "string", "format": "date-time"}
   }
 }
-

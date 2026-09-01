@@ -1,23 +1,45 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.example.dev/detool/usage-proof.json",
+  "$id": "https://raw.githubusercontent.com/outisseus/detool/main/schemas/usage-proof.json",
   "title": "UsageProof",
   "type": "object",
   "additionalProperties": false,
-  "required": ["proof_id", "request_digest", "capability_id", "capability_version", "started_at", "completed_at", "outcome", "verification"],
+  "required": [
+    "proof_id",
+    "request_digest",
+    "capability_id",
+    "capability_version",
+    "started_at",
+    "completed_at",
+    "outcome",
+    "verification",
+    "chargeable"
+  ],
   "properties": {
     "proof_id": {"type": "string"},
     "request_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
     "result_digest": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "before_state_digest": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "after_state_digest": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "confirmation_id": {"type": ["string", "null"]},
     "capability_id": {"type": "string"},
     "capability_version": {"type": "string"},
     "provider_route": {"type": "string"},
     "started_at": {"type": "string", "format": "date-time"},
     "completed_at": {"type": "string", "format": "date-time"},
     "outcome": {"enum": ["verified", "failed", "indeterminate", "challenged"]},
-    "verification": {"type": "object", "required": ["method", "verifier"], "properties": {"method": {"type": "string"}, "verifier": {"type": "string"}, "evidence_uri": {"type": ["string", "null"]}}},
+    "verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "verifier"],
+      "properties": {
+        "method": {"type": "string"},
+        "verifier": {"type": "string"},
+        "evidence_uri": {"type": ["string", "null"]}
+      }
+    },
     "metering": {"type": "object"},
+    "chargeable": {"type": "boolean"},
     "signature": {"type": ["string", "null"]}
   }
 }
-
